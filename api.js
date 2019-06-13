@@ -14,9 +14,14 @@ const getFilenameFromUrl = url => {
 }
 
 module.exports = async (targetUrl, option) => {
-  const { device, resource: reso, order: orderKey, proxyserver } = option
+  const { device, resource: reso, sort: sortKey, order, proxyserver } = option
   const ua = device === 'pc' ? UA_CHROME : UA_CHROME_MOBILE
   const vp = device === 'pc' ? VIEWPORT_PC_DEFAULT : VIEWPORT_SP_DEFAULT
+  const compare = (a, b) => {
+    if (a === b) return 0
+    return a[sortKey] > b[sortKey] ? -1 : 1
+  }
+  const sort = (a, b) => (order === 'DESC' ? compare(a, b) : compare(b, a))
   const launchOption = proxyserver
     ? {
         args: [`--proxy-server=${proxyserver}`]
@@ -69,9 +74,7 @@ resource: ${reso}
     await page.goto(targetUrl)
     await page.close()
     await browser.close()
-    const sortHeavyList = Object.values(requestList).sort((a, b) =>
-      a[orderKey] > b[orderKey] ? 1 : -1
-    )
+    const sortHeavyList = Object.values(requestList).sort(sort)
     console.table(sortHeavyList)
     process.exit()
   } catch (err) {

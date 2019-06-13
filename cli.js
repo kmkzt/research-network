@@ -12,8 +12,9 @@ Options
   --help,-h             Show help.
   --device, -d          Select device. pc, sp.
   --resource, -r        Select research resource. all, xhf, fetch, script, image etc
-  --order, -o           Sort by orderKey.  default resource download time. time, end, start, etc
-  --proxyserver, -p     proxy server config.
+  --sort, -s            Sort by orderKey. default resource download time. time, end, start, size etc
+  --order, -o           Order by ASC or DESC. default DESC. DESC or ASC.
+  --proxyserver, -p     Proxy server config.
 
 Examples
   $ research-network https://google.com
@@ -30,9 +31,9 @@ Examples
         alias: 'r',
         default: 'xhr,fetch'
       },
-      order: {
+      sort: {
         type: 'string',
-        alias: 'o',
+        alias: 's',
         default: 'time'
       },
       help: {
@@ -44,6 +45,11 @@ Examples
         type: 'string',
         alias: 'p',
         default: undefined
+      },
+      order: {
+        type: 'string',
+        alias: 'o',
+        default: 'DESC'
       }
     }
   }

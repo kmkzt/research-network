@@ -1,0 +1,26 @@
+{
+  "name": "reseaerch-netwotk",
+  "version": "0.0.0",
+  "description": "Research website network resource",
+  "license": "MIT",
+  "repository": "kmkzt/research-network",
+  "bin": {
+		"research-network": "cli.js"
+  },
+  "engines": {
+		"node": ">=8"
+	},
+  "files": [
+		"cli.js",
+		"api.js"
+	],
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [],
+  "author": "kmkzt",
+  "dependencies": {
+    "meow": "5.0.0",
+    "puppeteer": "1.15.0"
+  }
+}

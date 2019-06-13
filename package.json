@@ -5,22 +5,26 @@
   "license": "MIT",
   "repository": "kmkzt/research-network",
   "bin": {
-		"research-network": "cli.js"
+    "research-network": "cli.js"
   },
   "engines": {
-		"node": ">=8"
-	},
+    "node": ">=8"
+  },
   "files": [
-		"cli.js",
-		"api.js"
-	],
+    "cli.js",
+    "api.js"
+  ],
   "scripts": {
-    "test": "node cli.js"
+    "test": "node cli.js",
+    "release": "release-it"
   },
   "keywords": [],
   "author": "kmkzt",
   "dependencies": {
     "meow": "5.0.0",
     "puppeteer": "1.15.0"
+  },
+  "devDependencies": {
+    "release-it": "^12.3.0"
   }
 }

@@ -50,11 +50,13 @@ resource: ${reso}
     page.on('requestfinished', async req => {
       const end = await page.metrics()
       const url = req.url()
+      const file = await req.response().text()
       if (requestList.hasOwnProperty(url)) {
         const info = (requestList[url] = {
           ...requestList[url],
           end: end.Timestamp,
           time: convertMs(end.Timestamp - requestList[url].start),
+          size: file.length,
           url
         })
         console.log(

@@ -9,11 +9,11 @@ Usage
   $ research-network <url>
 
 Options
-  --help,-h             show help
-  --device, -d          device
-  --resource, -r        all, xhf, fetch, script, image etc
-  --order, -o           order
-  --proxyserver, -p     set proxy server
+  --help,-h             Show help.
+  --device, -d          Select device. pc, sp.
+  --resource, -r        Select research resource. all, xhf, fetch, script, image etc
+  --order, -o           Sort by orderKey.  default resource download time. time, end, start, etc
+  --proxyserver, -p     proxy server config.
 
 Examples
   $ research-network https://google.com

@@ -15,7 +15,6 @@
     "api.js"
   ],
   "scripts": {
-    "test": "node cli.js",
     "release": "release-it"
   },
   "keywords": [],

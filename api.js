@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer')
-
+const ora = require('ora')
+const chalk = require('chalk')
 const { UA_CHROME, UA_CHROME_MOBILE } = require('./constants/useragent.js')
 const {
   VIEWPORT_PC_DEFAULT,
@@ -39,6 +40,7 @@ resource: ${reso}
     await page.setViewport(vp)
     await page.setUserAgent(ua)
     let requestList = {}
+    const loading = ora('loading').start()
     page.on('request', async req => {
       const resource = req.resourceType()
       const checkResource =
@@ -50,32 +52,46 @@ resource: ${reso}
           resource,
           start: start.Timestamp
         }
+        loading.start(url)
+      }
+    })
+    page.on('requestfailed', async req => {
+      const url = req.url()
+      if (requestList.hasOwnProperty(url)) {
+        loading.fail(`fail: ${getFilenameFromUrl(info.url) || info.url}`)
       }
     })
     page.on('requestfinished', async req => {
+      const res = req.response()
+      if (!res.ok()) return
       const end = await page.metrics()
       const url = req.url()
-      const file = await req.response().text()
+      const file = await res.text()
+      const size = file.length
       if (requestList.hasOwnProperty(url)) {
         const info = (requestList[url] = {
           ...requestList[url],
           end: end.Timestamp,
           time: convertMs(end.Timestamp - requestList[url].start),
-          size: file.length,
+          size,
           url
         })
-        console.log(
-          `${getFilenameFromUrl(info.url) || info.url}: ${info.resource} -> ${
-            info.time
-          }ms`
+        loading.succeed(
+          `${info.resource}: ${
+            info.size > 300000
+              ? chalk.bgRed(info.size + 'Byte')
+              : chalk.green(info.size + 'Byte')
+          } -> ${
+            info.time > 500
+              ? chalk.bgRed(info.time + 'ms')
+              : chalk.green(info.time + 'ms')
+          } ${info.url}`
         )
       }
     })
     await page.goto(targetUrl)
-    await page.close()
-    await browser.close()
-    const sortHeavyList = Object.values(requestList).sort(sort)
-    console.table(sortHeavyList)
+    const sortResult = Object.values(requestList).sort(sort)
+    console.table(sortResult)
     process.exit()
   } catch (err) {
     console.log(err)

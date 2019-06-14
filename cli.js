@@ -15,6 +15,8 @@ Options
   --sort, -s            Sort by orderKey. default resource download time. time, end, start, size etc
   --order, -o           Order by ASC or DESC. default DESC. DESC or ASC.
   --proxyserver, -p     Proxy server config.
+  --maxsize             Color download size. 300KB is default.
+  --maxtime             Color download time. 500ms is default.
 
 Examples
   $ research-network https://google.com
@@ -29,7 +31,7 @@ Examples
       resource: {
         type: 'string',
         alias: 'r',
-        default: 'xhr,fetch'
+        default: 'all'
       },
       sort: {
         type: 'string',
@@ -50,6 +52,12 @@ Examples
         type: 'string',
         alias: 'o',
         default: 'DESC'
+      },
+      maxsize: {
+        type: 'string'
+      },
+      maxtime: {
+        type: 'string'
       }
     }
   }

@@ -15,7 +15,15 @@ const getFilenameFromUrl = url => {
 }
 
 module.exports = async (targetUrl, option) => {
-  const { device, resource: reso, sort: sortKey, order, proxyserver } = option
+  const {
+    device,
+    resource: reso,
+    sort: sortKey,
+    order,
+    proxyserver,
+    maxsize,
+    maxtime
+  } = option
   const ua = device === 'pc' ? UA_CHROME : UA_CHROME_MOBILE
   const vp = device === 'pc' ? VIEWPORT_PC_DEFAULT : VIEWPORT_SP_DEFAULT
   const compare = (a, b) => {
@@ -76,13 +84,14 @@ resource: ${reso}
           size,
           url
         })
+
         loading.succeed(
           `${info.resource}: ${
-            info.size > 300000
+            info.size > (maxsize || 300000)
               ? chalk.bgRed(info.size + 'Byte')
               : chalk.green(info.size + 'Byte')
           } -> ${
-            info.time > 500
+            info.time > (maxtime || 500)
               ? chalk.bgRed(info.time + 'ms')
               : chalk.green(info.time + 'ms')
           } ${info.url}`
@@ -91,6 +100,7 @@ resource: ${reso}
     })
     await page.goto(targetUrl)
     const sortResult = Object.values(requestList).sort(sort)
+    console.log('\n')
     console.table(sortResult)
     process.exit()
   } catch (err) {

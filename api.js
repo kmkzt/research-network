@@ -58,7 +58,7 @@ resource: ${reso}
     page.on('requestfailed', async req => {
       const url = req.url()
       if (requestList.hasOwnProperty(url)) {
-        loading.fail(`fail: ${getFilenameFromUrl(info.url) || info.url}`)
+        loading.fail(`fail: ${url}`)
       }
     })
     page.on('requestfinished', async req => {

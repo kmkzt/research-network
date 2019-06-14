@@ -2,6 +2,8 @@
 
 > this is cli tool for research network resource. This use [puppeteer](https://github.com/GoogleChrome/puppeteer) API.
 
+![example capture](./capture.gif)
+
 ## Install
 
 ```sh

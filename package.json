@@ -24,7 +24,7 @@
     "chalk": "2.4.2",
     "meow": "5.0.0",
     "ora": "3.4.0",
-    "puppeteer": "1.15.0"
+    "puppeteer": "1.17.0"
   },
   "devDependencies": {
     "release-it": "12.3.0"

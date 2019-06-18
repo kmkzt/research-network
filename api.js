@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer')
+const speedline = require('speedline')
 const ora = require('ora')
 const chalk = require('chalk')
 const { UA_CHROME, UA_CHROME_MOBILE } = require('./constants/useragent.js')
@@ -26,6 +27,7 @@ module.exports = async (targetUrl, option) => {
   } = option
   const ua = device === 'pc' ? UA_CHROME : UA_CHROME_MOBILE
   const vp = device === 'pc' ? VIEWPORT_PC_DEFAULT : VIEWPORT_SP_DEFAULT
+  const filename = 'trace.json'
   const compare = (a, b) => {
     if (a === b) return 0
     return a[sortKey] > b[sortKey] ? -1 : 1
@@ -98,10 +100,14 @@ resource: ${reso}
         )
       }
     })
+    await page.tracing.start({ path: filename, screenshots: true })
     await page.goto(targetUrl)
     const sortResult = Object.values(requestList).sort(sort)
     console.log('\n')
     console.table(sortResult)
+    await page.tracing.stop()
+    const results = await speedline(filename)
+    console.log('Speed Index value:', results.speedIndex)
     process.exit()
   } catch (err) {
     console.log(err)

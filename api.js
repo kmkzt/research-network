@@ -8,10 +8,11 @@ const {
 } = require('./constants/viewport.js')
 
 const convertMs = s => Math.floor(s * 1000000) / 1000
-const getFilenameFromUrl = url => {
-  const match = url.match(/[^/]+$/i)
-  if (!match) return null
-  return match[0]
+const removeQueryAndHashUrl = url => {
+  if (typeof url !== 'string') return url
+  const match = url.match(/^(https?:\/{2,}.*?)(?:\?|#|$)/)
+  if (!match && match.length > 2) return url
+  return match[1]
 }
 
 module.exports = async (targetUrl, option) => {
@@ -124,10 +125,20 @@ resource: ${reso}
         }
       }
     }
-    const sortResult = Object.values(requestList).sort(sort)
+    const sortResult = Object.values(requestList)
+      .reduce((arr, d) => {
+        if (!d.url) return arr
+        return [
+          ...arr,
+          {
+            ...d,
+            url: removeQueryAndHashUrl(d.url)
+          }
+        ]
+      }, [])
+      .sort(sort)
     console.log('\n')
     console.table(sortResult)
-
     process.exit()
   } catch (err) {
     console.log(err)

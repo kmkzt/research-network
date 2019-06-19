@@ -47,6 +47,10 @@ resource: ${reso}
     const page = await browser.newPage()
     await page.setViewport(vp)
     await page.setUserAgent(ua)
+    await Promise.all([
+      page.coverage.startJSCoverage(),
+      page.coverage.startCSSCoverage()
+    ])
     let requestList = {}
     const loading = ora('loading').start()
     page.on('request', async req => {
@@ -99,9 +103,31 @@ resource: ${reso}
       }
     })
     await page.goto(targetUrl)
+    const [jsCoverage, cssCoverage] = await Promise.all([
+      page.coverage.stopJSCoverage(),
+      page.coverage.stopCSSCoverage()
+    ])
+    const coverage = [...cssCoverage, ...jsCoverage]
+    for (const entry of coverage) {
+      const url = entry.url
+      if (!requestList.hasOwnProperty(url)) continue
+      const fileByte = entry.text.length
+      // totalBytes += entry.text.length
+      const fileUsedByte = entry.ranges.reduce((used, range) => {
+        return used + range.end - range.start - 1
+      }, 0)
+      requestList = {
+        ...requestList,
+        [url]: {
+          ...requestList[url],
+          coverage: Math.floor((fileUsedByte / fileByte) * 10000) / 100
+        }
+      }
+    }
     const sortResult = Object.values(requestList).sort(sort)
     console.log('\n')
     console.table(sortResult)
+
     process.exit()
   } catch (err) {
     console.log(err)

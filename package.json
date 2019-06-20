@@ -18,7 +18,17 @@
   "scripts": {
     "release": "release-it"
   },
-  "keywords": [],
+  "keywords": [
+    "puppeteer",
+    "performance",
+    "chrome",
+    "devtools",
+    "network",
+    "resource",
+    "coverage",
+    "loadtime",
+    "filesize"
+  ],
   "author": "kmkzt",
   "dependencies": {
     "chalk": "2.4.2",

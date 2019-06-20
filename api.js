@@ -126,17 +126,27 @@ resource: ${reso}
       }
     }
     const sortResult = Object.values(requestList)
-      .reduce((arr, d) => {
-        if (!d.url) return arr
-        return [
-          ...arr,
-          {
-            ...d,
-            url: removeQueryAndHashUrl(d.url)
-          }
-        ]
-      }, [])
       .sort(sort)
+      .reduce((obj, d) => {
+        if (!d.url) return obj
+        let url = removeQueryAndHashUrl(d.url)
+        if (obj.hasOwnProperty(url)) {
+          url = chalk.bgRed(' duplicate? ') + url
+        }
+        const { resource, start, end, time, size, coverage } = d
+        return {
+          ...obj,
+          [url]: {
+            resource,
+            size,
+            coverage: coverage || '--',
+            start,
+            end,
+            time
+          }
+        }
+      }, {})
+
     console.log('\n')
     console.table(sortResult)
     process.exit()

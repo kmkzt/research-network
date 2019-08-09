@@ -37,6 +37,6 @@
     "puppeteer": "1.17.0"
   },
   "devDependencies": {
-    "release-it": "12.3.0"
+    "release-it": "12.3.5"
   }
 }

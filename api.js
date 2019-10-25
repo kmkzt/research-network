@@ -11,7 +11,7 @@ const convertMs = s => Math.floor(s * 1000000) / 1000
 const removeQueryAndHashUrl = url => {
   if (typeof url !== 'string') return url
   const match = url.match(/^(https?:\/{2,}.*?)(?:\?|#|$)/)
-  if (!match && match.length > 2) return url
+  if (!match || match.length > 2) return url
   return match[1]
 }
 

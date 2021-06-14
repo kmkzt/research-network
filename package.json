@@ -31,12 +31,12 @@
   ],
   "author": "kmkzt",
   "dependencies": {
-    "chalk": "2.4.2",
-    "meow": "5.0.0",
-    "ora": "3.4.0",
-    "puppeteer": "1.19.0"
+    "chalk": "4.1.1",
+    "meow": "10.0.1",
+    "ora": "5.4.1",
+    "puppeteer": "10.0.0"
   },
   "devDependencies": {
-    "release-it": "12.3.5"
+    "release-it": "14.9.0"
   }
 }
